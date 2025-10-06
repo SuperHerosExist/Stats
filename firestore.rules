@@ -1,0 +1,86 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isAuthenticated() && request.auth.uid == uid;
+    }
+
+    function isCoach() {
+      return isAuthenticated() &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'coach';
+    }
+
+    function belongsToSameProgram(programId) {
+      return isAuthenticated() &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.programId == programId;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isCoach();
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId);
+      allow delete: if false; // Prevent deletion
+    }
+
+    // Players collection
+    match /players/{playerId} {
+      allow read: if isOwner(resource.data.uid) ||
+                     (isCoach() && belongsToSameProgram(resource.data.programId));
+      allow create: if isAuthenticated();
+      allow update: if isOwner(resource.data.uid) || isCoach();
+      allow delete: if isCoach();
+    }
+
+    // Teams collection
+    match /teams/{teamId} {
+      allow read: if isAuthenticated() && belongsToSameProgram(resource.data.programId);
+      allow create: if isCoach();
+      allow update: if isCoach();
+      allow delete: if isCoach();
+    }
+
+    // Sessions collection
+    match /sessions/{sessionId} {
+      allow read: if isAuthenticated() &&
+                     (request.auth.uid in resource.data.playerIds ||
+                      isCoach());
+      allow create: if isAuthenticated();
+      allow update: if isCoach() || request.auth.uid in resource.data.playerIds;
+      allow delete: if isCoach();
+    }
+
+    // Games collection
+    match /games/{gameId} {
+      allow read: if isAuthenticated() &&
+                     (isOwner(resource.data.playerId) || isCoach());
+      allow create: if isAuthenticated();
+      allow update: if isOwner(resource.data.playerId) || isCoach();
+      allow delete: if isCoach();
+    }
+
+    // Frames collection
+    match /frames/{frameId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated();
+      allow delete: if isCoach();
+    }
+
+    // Coach Notes - private to coaches only
+    match /coachNotes/{noteId} {
+      allow read: if isCoach() &&
+                     (isOwner(resource.data.coachId) ||
+                      isOwner(resource.data.playerId));
+      allow create: if isCoach();
+      allow update: if isCoach() && isOwner(resource.data.coachId);
+      allow delete: if isCoach() && isOwner(resource.data.coachId);
+    }
+  }
+}

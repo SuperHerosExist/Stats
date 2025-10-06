@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss init:*)",
+      "Bash(npx --yes tailwindcss init -p)",
+      "Bash(npm run build:*)",
+      "Bash(npm test:*)",
+      "Read(//c/Users/daves/**)",
+      "Bash(firebase deploy:*)",
+      "Bash(npm run dev:*)",
+      "Bash(dir)",
+      "Bash(pkill:*)",
+      "Bash(cat:*)",
+      "Bash(firebase apps:sdkconfig:*)",
+      "Bash(firebase init:*)",
+      "Bash(ls:*)",
+      "Bash(git init:*)",
+      "Bash(git branch:*)",
+      "Bash(git remote add:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
