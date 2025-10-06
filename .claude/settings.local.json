@@ -20,7 +20,9 @@
       "Bash(git init:*)",
       "Bash(git branch:*)",
       "Bash(git remote add:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: Complete bowling statistics tracking application\n\nFeatures implemented:\n- USBC-compliant scoring engine with full strike/spare/split handling\n- Real-time statistics dashboard with comprehensive metrics\n- Multiple game modes (League, Practice Spares, Practice Full, Traditional Match, Baker Match)\n- Coach admin tools (roster management, team stats, player notes)\n- Player stats page with heatmaps and analytics\n- School/program management (Willard High School)\n- Firebase authentication with role-based access control\n- Firestore database with real-time sync\n- Glassmorphic UI with TailwindCSS 4.0\n- TypeScript throughout with full type safety\n- 10+ passing tests for scoring engine\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
