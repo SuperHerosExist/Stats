@@ -110,13 +110,28 @@ export function ScoringInterface({
       frame.leaveAfterBall1 = createPinLeave(ball.pinsetAfter, wasConverted);
     }
 
-    // Check for spare (ball 2 clears remaining pins)
-    if (currentBall === 2) {
+    // Check for spare (ball 2 clears remaining pins in frames 1-9)
+    if (currentFrame <= 9 && currentBall === 2) {
       const ball1Pins = frame.balls[0]?.pinsKnockedDown || 0;
       if (ball1Pins + ball.pinsKnockedDown === 10) {
         frame.isSpare = true;
         if (frame.leaveAfterBall1) {
           frame.leaveAfterBall1.isConverted = true;
+        }
+      }
+    }
+
+    // Handle 10th frame strike/spare flags
+    if (currentFrame === 10) {
+      const ball1 = frame.balls[0];
+      const ball2 = frame.balls[1];
+
+      if (ball1 && ball1.pinsKnockedDown === 10) {
+        frame.isStrike = true;
+      }
+      if (ball1 && ball2) {
+        if (ball1.pinsKnockedDown < 10 && ball1.pinsKnockedDown + ball2.pinsKnockedDown === 10) {
+          frame.isSpare = true;
         }
       }
     }
@@ -138,15 +153,36 @@ export function ScoringInterface({
   const handle10thFrame = (_ball: Ball, frame: Frame) => {
     const totalBalls = frame.balls.length;
 
-    if (totalBalls === 2) {
+    if (totalBalls === 1) {
+      // After first ball in 10th frame
+      if (frame.balls[0].pinsKnockedDown === 10) {
+        // Strike on ball 1 - reset pins and continue
+        setPinsStanding(ALL_PINS);
+        setSelectedPins([]);
+        setCurrentBall(2);
+      } else {
+        // Not a strike - continue to ball 2 with remaining pins
+        setCurrentBall(2);
+        setSelectedPins([]);
+      }
+    } else if (totalBalls === 2) {
       const ball1 = frame.balls[0];
       const ball2 = frame.balls[1];
 
       // Check if 3rd ball needed
-      if (ball1.pinsKnockedDown === 10 || ball1.pinsKnockedDown + ball2.pinsKnockedDown === 10) {
+      const needThirdBall = ball1.pinsKnockedDown === 10 || ball1.pinsKnockedDown + ball2.pinsKnockedDown === 10;
+
+      if (needThirdBall) {
         setCurrentBall(3);
-        // Reset pins for 3rd ball if ball 2 was a strike
-        if (ball2.pinsKnockedDown === 10) {
+        // Reset pins for 3rd ball if ball 1 was a strike OR if we got a spare
+        if (ball1.pinsKnockedDown === 10) {
+          // If ball 1 was a strike, check if ball 2 was also a strike
+          if (ball2.pinsKnockedDown === 10) {
+            setPinsStanding(ALL_PINS);
+          }
+          // If ball 2 wasn't a strike, pins are already set correctly
+        } else if (ball1.pinsKnockedDown + ball2.pinsKnockedDown === 10) {
+          // Spare - reset all pins
           setPinsStanding(ALL_PINS);
         }
         setSelectedPins([]);
