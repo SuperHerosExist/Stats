@@ -41,16 +41,16 @@ export function PinGrid({ pinsStanding, onPinTap, disabled = false }: PinGridPro
   return (
     <div className="w-full max-w-md mx-auto">
       {/* Pin Grid - Bowling Triangle Formation */}
-      <div className="bg-gradient-to-b from-gray-100 to-gray-200 rounded-lg p-6 shadow-inner">
-        <div className="space-y-3">
+      <div className="bg-gradient-to-b from-amber-100 via-amber-50 to-amber-100 rounded-2xl p-8 shadow-xl border-4 border-amber-200">
+        <div className="space-y-4">
           {/* Row 1 - Pin 7, 8, 9, 10 */}
-          <div className="flex justify-center gap-2">
+          <div className="flex justify-center gap-3">
             {[7, 8, 9, 10].map((pin) => (
               <button
                 key={pin}
                 onClick={() => handlePinClick(pin)}
                 disabled={disabled || !isPinStanding(pin)}
-                className={`w-14 h-14 rounded-lg font-bold text-xl transition-all ${getPinButtonClass(pin)}`}
+                className={`w-16 h-16 rounded-full font-bold text-xl transition-all shadow-md ${getPinButtonClass(pin)}`}
               >
                 {pin}
               </button>
@@ -58,13 +58,14 @@ export function PinGrid({ pinsStanding, onPinTap, disabled = false }: PinGridPro
           </div>
 
           {/* Row 2 - Pin 4, 5, 6 */}
-          <div className="flex justify-center gap-2 ml-7">
+          <div className="flex justify-center gap-3">
+            <div className="w-8" /> {/* Spacer for offset */}
             {[4, 5, 6].map((pin) => (
               <button
                 key={pin}
                 onClick={() => handlePinClick(pin)}
                 disabled={disabled || !isPinStanding(pin)}
-                className={`w-14 h-14 rounded-lg font-bold text-xl transition-all ${getPinButtonClass(pin)}`}
+                className={`w-16 h-16 rounded-full font-bold text-xl transition-all shadow-md ${getPinButtonClass(pin)}`}
               >
                 {pin}
               </button>
@@ -72,13 +73,14 @@ export function PinGrid({ pinsStanding, onPinTap, disabled = false }: PinGridPro
           </div>
 
           {/* Row 3 - Pin 2, 3 */}
-          <div className="flex justify-center gap-2 ml-14">
+          <div className="flex justify-center gap-3">
+            <div className="w-16" /> {/* Spacer for offset */}
             {[2, 3].map((pin) => (
               <button
                 key={pin}
                 onClick={() => handlePinClick(pin)}
                 disabled={disabled || !isPinStanding(pin)}
-                className={`w-14 h-14 rounded-lg font-bold text-xl transition-all ${getPinButtonClass(pin)}`}
+                className={`w-16 h-16 rounded-full font-bold text-xl transition-all shadow-md ${getPinButtonClass(pin)}`}
               >
                 {pin}
               </button>
@@ -86,11 +88,12 @@ export function PinGrid({ pinsStanding, onPinTap, disabled = false }: PinGridPro
           </div>
 
           {/* Row 4 - Pin 1 (headpin) */}
-          <div className="flex justify-center ml-16">
+          <div className="flex justify-center">
+            <div className="w-24" /> {/* Spacer for offset */}
             <button
               onClick={() => handlePinClick(1)}
               disabled={disabled || !isPinStanding(1)}
-              className={`w-14 h-14 rounded-lg font-bold text-xl transition-all ${getPinButtonClass(1)}`}
+              className={`w-16 h-16 rounded-full font-bold text-xl transition-all shadow-md ${getPinButtonClass(1)}`}
             >
               1
             </button>
@@ -101,15 +104,15 @@ export function PinGrid({ pinsStanding, onPinTap, disabled = false }: PinGridPro
       {/* Pin status legend */}
       <div className="mt-4 flex justify-center gap-4 text-sm">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-white rounded border-2 border-gray-400" />
+          <div className="w-6 h-6 bg-white rounded-full border-2 border-gray-400" />
           <span>Available</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-yellow-400 rounded border-4 border-yellow-600" />
+          <div className="w-6 h-6 bg-yellow-400 rounded-full border-4 border-yellow-600" />
           <span>Selected (LEFT)</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-gray-300 rounded opacity-50" />
+          <div className="w-6 h-6 bg-gray-300 rounded-full opacity-50" />
           <span>Down</span>
         </div>
       </div>
