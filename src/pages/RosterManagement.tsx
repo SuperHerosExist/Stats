@@ -77,8 +77,8 @@ export function RosterManagement() {
       <header className="bg-white/10 backdrop-blur-lg shadow-xl border-b border-white/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <Link to="/dashboard" className="text-white hover:text-gray-200">
-              ← Back
+            <Link to="/coach/admin" className="text-white hover:text-gray-200">
+              ← Back to Admin
             </Link>
             <h1 className="text-2xl font-bold text-white">Roster Management</h1>
           </div>
